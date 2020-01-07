@@ -1,0 +1,52 @@
+@charset "utf-8";
+/* 这里是公共CSS样式编辑 */
+
+/* 取消内外间距 */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* 设置使用元素可以获取百分比高度 */
+html,
+body {
+    height: 100%;
+}
+
+/* 取消使用display后有间距的情况 */
+ul {
+    font-size: 0px;
+    list-style: none;
+}
+
+/* 取消ul/li前面的点 */
+ul li {
+    list-style: none;
+    font-size: 16px;
+}
+
+/* 清除a标签的下划线 */
+a {
+    text-decoration: none;
+}
+
+/* 兼容IE浏览器 */
+.cf {
+    zoom: 1;
+}
+
+/* 清除浮动全称是clearFloat */
+.cf::after {
+    content: "";
+    display: block;
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+    clear: both;
+}
+
+/* 取消input/button的点击后呈现蓝色边框效果 */
+input,
+button {
+    outline: none;
+}
