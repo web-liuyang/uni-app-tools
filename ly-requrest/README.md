@@ -13,6 +13,15 @@
 import {req} from "common/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
 req.defaultData.baseUrl = "127.0.0.1"; //公共请求基础地址
 req.defaultData.dataPublic.token = "0000-1111-2222-3333" //设置token值
+//全局请求前置拦截
+req.defaultData.beforeAjax = (bf)=>{
+    console.log(bf)
+}
+//全局请求后置拦截
+req.defaultData.afterAjax = (af)=>{
+    console.log(af)
+    return af;
+}
 Vue.prototype.$ly = {req}; //挂载在原形上
 ```
 
@@ -55,12 +64,57 @@ console.log(data);
 const data = this.$ly.req.ajax({
     path:"/getName",
     data:{
-        //token:"0000-1111-2222-3333" 设置了公共参数，默认会带上
+        //token:"0000-1111-2222-3333" 设置了公共参数，默认都会带上
     	name:"LiuYang"
     }
 })
 console.log(data);
 ```
+
+##### 4.带请求前置拦截
+
+```js
+const data = this.$ly.req.ajax({
+    path:"/getName",
+    data:{
+        //token:"0000-1111-2222-3333" 设置了公共参数，默认都会带上
+    	name:"LiuYang"
+    },
+    beforeAjax:(bf)=>{
+        console.log(bf)  //bf = {requestInfo,requestTask} 
+        //requestInfo -> 请求的信息
+        //requestTask -> 请求返回值
+        //requestTask.abort() 结束请求
+    }
+    
+})
+console.log(data);
+```
+
+##### 5.带请求后置拦截
+
+```js
+const data = this.$ly.req.ajax({
+    path:"/getName",
+    data:{
+        //token:"0000-1111-2222-3333" 设置了公共参数，默认都会带上
+    	name:"LiuYang"
+    },
+    afterAjax:(af)=>{
+        console.log(af) //后端返回的信息
+        //可以在这里处理后端返回的信息
+        //处理完成以后必须要返回，不然data为空
+		return af;
+    }
+})
+console.log(data);
+```
+
+> 在函数内的请求拦截的优先级要大于全局请求拦截
+>
+> 请求前置拦截的返回值有两个属性{requestInfo,requestTask} 
+>
+> 请求后置拦截只有一个返回值，那就是请求成功后返回的数据
 
 
 
@@ -75,19 +129,24 @@ console.log(data);
 | header | string | 请求头 | 'content-type': "application/x-www-form-urlencoded" |
 | dataType | string | 后端返回的数据格式 | json |
 | dataPublic | object | 请求时默认带上的参数(常用于token) |  |
+| beforeAjax | function | 请求前置拦截，可拦截参数与结束请求操作，常用于验证某些数据 | |
+| afterAjax | function | 请求后置拦截，常用于为后端返回的数据做处理 | |
+
 
 
 
 ### ajax参数
 
-|  属性名  |  类型  |                             描述                             | 兼容 |
-| :------: | :----: | :----------------------------------------------------------: | :--: |
-|  title   | string |       是否显示请求提示，推荐8字以内，默认为false不显示       |      |
-|   path   | string |         请求路径，默认加上基础地址；可以请求外部地址         |      |
-|  method  | string |                     请求的方式，默认GET                      |      |
-|  header  | object | 请求头，默认为'content-type': "application/x-www-form-urlencoded" |      |
-| dataType | string | 后端返回的数据类型，默认为json，会对返回的数据做一次JSON.parse |      |
-|   data   | object |        请求的参数，设置了dataPublic会默认带上公共参数        |      |
+|   属性名   |   类型   |                             描述                             | 兼容 |
+| :--------: | :------: | :----------------------------------------------------------: | :--: |
+|   title    |  string  |       是否显示请求提示，推荐8字以内，默认为false不显示       |      |
+|    path    |  string  |         请求路径，默认加上基础地址；可以请求外部地址         |      |
+|   method   |  string  |                     请求的方式，默认GET                      |      |
+|   header   |  object  | 请求头，默认为'content-type': "application/x-www-form-urlencoded" |      |
+|  dataType  |  string  | 后端返回的数据类型，默认为json，会对返回的数据做一次JSON.parse |      |
+|    data    |  object  |        请求的参数，设置了dataPublic会默认带上公共参数        |      |
+| beforeAjax | function |  请求前置拦截，可拦截参数与结束请求操作，常用于验证某些数据  |      |
+| afterAjax  | function |          请求后置拦截，常用于为后端返回的数据做处理          |      |
 
 
 
