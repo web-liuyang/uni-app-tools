@@ -28,7 +28,7 @@ Vue.prototype.$ly = {req}; //挂载在原形上
 ##### 局部使用
 
 ```js
-import {req} from "/ly-tool/ly-regexp.js"; //文件路径请换成本地路径
+import {req} from "common/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
 const data = await req.ajax({
     path:"127.0.0.1/getName"
 })
