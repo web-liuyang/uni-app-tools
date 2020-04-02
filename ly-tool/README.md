@@ -1,128 +1,59 @@
-## Classes
+## 使用方式
 
-<dl>
-<dt><a href="#Reg">Reg</a></dt>
-<dd></dd>
-</dl>
+### return: [Boolean](https://www.w3school.com.cn/jsref/jsref_obj_boolean.asp)
 
-## Members
 
-<dl>
-<dt><a href="#regexpList">regexpList</a> : <code>object</code></dt>
-<dd><p>正则表达式列表</p>
-</dd>
-</dl>
 
-<a name="Reg"></a>
+### 使用指南
 
-## Reg
-**Kind**: global class  
+##### 全局使用（推荐）
 
-* [Reg](#Reg)
-    * [.phone(tel)](#Reg+phone) ⇒ <code>boolean</code>
-    * [.password(pwd)](#Reg+password) ⇒ <code>boolean</code>
-    * [.number(num)](#Reg+number) ⇒ <code>boolean</code>
-    * [.prc(cn)](#Reg+prc) ⇒ <code>boolean</code>
-    * [.price(price)](#Reg+price) ⇒ <code>boolean</code>
-
-<a name="Reg+phone"></a>
-
-### reg.phone(tel) ⇒ <code>boolean</code>
-正则判断11位正确手机号码
-
-**Kind**: instance method of [<code>Reg</code>](#Reg)  
-**Returns**: <code>boolean</code> - 返回[true|false]  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| tel | <code>number</code> | 需要判断的手机号码（必填） |
-
-**Example**  
 ```js
-this.ly.reg.phone(18284335838) //truethis.ly.reg.phone(1234567890) //false
+//main.js
+import {reg} from "common/ly-tool/ly-regexp.js"; //文件路径请换成本地路径
+Vue.prototype.$ly = {reg}; //挂载在原形上
 ```
-<a name="Reg+password"></a>
 
-### reg.password(pwd) ⇒ <code>boolean</code>
-正则判断6-12位密码
+##### 局部使用
 
-**Kind**: instance method of [<code>Reg</code>](#Reg)  
-**Returns**: <code>boolean</code> - 返回[true|false]  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| pwd | <code>number</code> \| <code>str</code> | 需要判断的密码（必填） |
-
-**Example**  
 ```js
-this.ly.reg.password(123456) //truethis.ly.reg.password(12345) //false
+import {reg} from "/ly-tool/ly-regexp.js"; //文件路径请换成本地路径
+reg.phone(18284335838) //true
+reg.phone(12345678910) //false
 ```
-<a name="Reg+number"></a>
 
-### reg.number(num) ⇒ <code>boolean</code>
-正则判断6为数字 （多用于6位支付密码）
 
-**Kind**: instance method of [<code>Reg</code>](#Reg)  
-**Returns**: <code>boolean</code> - 返回[true|false]  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| num | <code>number</code> | 需要判断数字（必填） |
+### 代码演示
 
-**Example**  
 ```js
-this.ly.reg.password(123456) //truethis.ly.reg.password(1234567890) //false
+//全局使用
+this.$ly.reg.phone(18284335838) //true
+this.$ly.reg.phone(12345678910) //false
 ```
-<a name="Reg+prc"></a>
 
-### reg.prc(cn) ⇒ <code>boolean</code>
-正则判断是否为汉字
 
-**Kind**: instance method of [<code>Reg</code>](#Reg)  
-**Returns**: <code>boolean</code> - 返回[true|false]  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| cn | <code>string</code> | 需要判断的字符串（必填） |
+### 正则方法表
 
-**Example**  
-```js
-this.ly.reg.prc("刘洋") //truethis.ly.reg.prc("LiuYang") //false
-```
-<a name="Reg+price"></a>
 
-### reg.price(price) ⇒ <code>boolean</code>
-正则判断是否为合法金额
+| 方法名 |      值类型      |          描述          |          应用场景          |
+| :----: | :--------------: | :--------------------: | ------ |
+| phone  | number \| string | 判断是否为11位电话号码 | 电话判断 |
+|    password    | number \| string | 判断是否为6-12位英文\|数字 | 用户密码 |
+| number | number | 判断是否为6位数字 | 支付密码 |
+| prc | string | 判断是否为中文汉字 | 姓名填写 |
+| price | number | 判断是否为合法金额 | 输入金额 |
+| carNumPrefix | array | 此方法不是正则仅用于展示 | 车牌前缀 |
 
-**Kind**: instance method of [<code>Reg</code>](#Reg)  
-**Returns**: <code>boolean</code> - 返回[true|false]  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| price | <code>number</code> | 需要判断金额 |
 
-**Example**  
-```js
-this.ly.reg.price(4.5) //truethis.ly.reg.price(0.001) //falsethis.ly.reg.price(0.0.) //falsethis.ly.reg.price(.0) //falsethis.ly.reg.price(..) //false
-```
-<a name="regexpList"></a>
 
-## regexpList : <code>object</code>
-正则表达式列表
 
-**Kind**: global variable  
-**Properties**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| phone | <code>number</code> | 手机号判断 |
-| password | <code>number</code> | 密码正则判断 |
-| number | <code>number</code> | 6位数字判断 |
-| prc | <code>number</code> | 汉字判断 |
-| price | <code>number</code> | 金额合法判断 |
-| carNumPrefix | <code>number</code> | 车牌号前缀 |
 
-**Example**  
-```js
-this.ly.reg["需要使用的正则判断"]("需要判断的字符串")
-```
+欢迎补充  984584014@qq.com
+
+------
+
+<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-04-02</p>
