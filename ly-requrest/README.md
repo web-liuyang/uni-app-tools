@@ -118,6 +118,14 @@ console.log(data);
 
 
 
+### 注意事项
+
+- 非H5端，不能使用浏览器自带对象，比如document、window、localstorage、cookie等，更不能使用jquery等依赖这些浏览器对象的框架。因为各家小程序快应用都不支持这些对象。不支持自动保持 cookie，服务器应避免验证 cookie。[(查看详情)](https://uniapp.dcloud.io/matter?id=%e5%8c%ba%e5%88%ab%e4%ba%8e%e4%bc%a0%e7%bb%9f-web-%e5%bc%80%e5%8f%91%e7%9a%84%e6%b3%a8%e6%84%8f)
+
+- 根据 W3C 规范，H5 端无法获取 response header 中 Set-Cookie、Set-Cookie2 这2个字段，对于跨域请求，允许获取的 response header 字段只限于“simple response header”和“Access-Control-Expose-Headers”。（[详情](https://www.w3.org/TR/cors/#access-control-allow-credentials-response-header)）
+
+  
+
 ### 全局配置表 defaultData
 
 
@@ -154,8 +162,9 @@ console.log(data);
 
 
 
-欢迎补充  984584014@qq.com
+欢迎补充  984584014@qq.com 、 [github](https://github.com/web-liuyang/uni-app)
 
 ------
 
-<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-04-02</p>
+<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-04-03</p>
+
