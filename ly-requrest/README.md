@@ -118,7 +118,7 @@ console.log(data);
 
 
 
-### 注意事项
+##### 注意事项
 
 - 非H5端，不能使用浏览器自带对象，比如document、window、localstorage、cookie等，更不能使用jquery等依赖这些浏览器对象的框架。因为各家小程序快应用都不支持这些对象。不支持自动保持 cookie，服务器应避免验证 cookie。[(查看详情)](https://uniapp.dcloud.io/matter?id=%e5%8c%ba%e5%88%ab%e4%ba%8e%e4%bc%a0%e7%bb%9f-web-%e5%bc%80%e5%8f%91%e7%9a%84%e6%b3%a8%e6%84%8f)
 
@@ -162,7 +162,9 @@ console.log(data);
 
 
 
-欢迎补充  984584014@qq.com 、 [github](https://github.com/web-liuyang/uni-app)
+欢迎补充  984584014@qq.com 
+
+更多插件请前往 [github](https://github.com/web-liuyang/uni-app-tools)
 
 ------
 
