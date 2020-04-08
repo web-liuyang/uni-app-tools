@@ -10,7 +10,7 @@
 
 ```js
 //main.js
-import {req} from "common/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
+import {req} from "common/ly-tools/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
 req.defaultData.baseUrl = "127.0.0.1"; //公共请求基础地址
 req.defaultData.dataPublic.token = "0000-1111-2222-3333" //设置token值
 //全局请求前置拦截
@@ -28,7 +28,7 @@ Vue.prototype.$ly = {req}; //挂载在原形上
 ##### 局部使用
 
 ```js
-import {req} from "common/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
+import {req} from "@/common/ly-tools/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
 const data = await req.ajax({
     path:"127.0.0.1/getName"
 })

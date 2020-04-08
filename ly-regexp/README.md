@@ -10,14 +10,14 @@
 
 ```js
 //main.js
-import {reg} from "common/ly-regexp/ly-regexp.js"; //文件路径请换成本地路径
+import {reg} from "common/ly-tools/ly-regexp/ly-regexp.js"; //文件路径请换成本地路径
 Vue.prototype.$ly = {reg}; //挂载在原形上
 ```
 
 ##### 局部使用
 
 ```js
-import {reg} from "/ly-regexp/ly-regexp.js"; //文件路径请换成本地路径
+import {reg} from "@/common/ly-tools/ly-regexp/ly-regexp.js"; //文件路径请换成本地路径
 reg.phone(18284335838) //true
 reg.phone(12345678910) //false
 ```

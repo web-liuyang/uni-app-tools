@@ -10,7 +10,7 @@
 
 ```js
 //main.js
-import tool from "common/ly-common/ly-common"; //文件路径请换成本地路径
+import tool from "common/ly-tools/ly-common/ly-common.js"; //文件路径请换成本地路径
 Vue.prototype.$ly = {tool}; //挂载在原形上
 //全局加载，更方便使用SDK内所有封装
 ```
@@ -18,7 +18,7 @@ Vue.prototype.$ly = {tool}; //挂载在原形上
 ##### 按需加载（量少推荐）
 
 ```js
-import {node} from "common/ly-common/ly-common";//文件路径请换成本地路径
+import {node} from "common/ly-tools/ly-common/ly-common.js";//文件路径请换成本地路径
 Vue.prototype.$ly = {
     tool:{
         node
@@ -29,7 +29,7 @@ Vue.prototype.$ly = {
 ##### 局部使用
 
 ```js
-import {node} from "common/ly-common/ly-common";//文件路径请换成本地路径
+import {node} from "@/common/ly-tools/ly-common/ly-common.js";//文件路径请换成本地路径
 //局部使用，只在当前页面或组件中使用部分封装
 ```
 

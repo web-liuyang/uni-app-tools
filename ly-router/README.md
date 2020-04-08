@@ -14,7 +14,7 @@
 
 ```js
 //main.js
-import {router} from "common/ly-router/ly-router.js"; //文件路径请换成本地路径
+import {router} from "common/ly-tools/ly-router/ly-router.js"; //文件路径请换成本地路径
 router.defaultData.encode = true; //全局开启encodeURIComponent编码
 //默认是关闭的，根据实际需要酌情添加。
 Vue.prototype.$ly = {router}; //挂载在原形上
@@ -23,7 +23,7 @@ Vue.prototype.$ly = {router}; //挂载在原形上
 ##### 局部使用
 
 ```js
-import {router} from "common/ly-router/ly-router.js"; //文件路径请换成本地路径
+import {router} from "@/common/ly-router/ly-router.js"; //文件路径请换成本地路径
 router.pushTab("/pages/home/home") //跳转tabBar页面
 ```
 
