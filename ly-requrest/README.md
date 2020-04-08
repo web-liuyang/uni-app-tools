@@ -1,6 +1,6 @@
-## ajax 使用方式
+### ajax 使用方式
 
-### return: [Promise](https://www.runoob.com/w3cnote/javascript-promise-object.html)
+#### return: [Promise](https://www.runoob.com/w3cnote/javascript-promise-object.html)
 
 
 

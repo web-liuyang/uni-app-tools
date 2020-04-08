@@ -1,3 +1,9 @@
+/**
+ * @file 这是一个基于uniapp中的常用API进行的封装
+ * @author LiuYang <984584014@qq.com>
+ * @copyright LiuYang 2020
+ * @version 1.0.0
+ */
 // 节点信息
 /**
  * @description 获取节点信息

@@ -79,3 +79,16 @@ console.log(data);	//当前坐标到目标坐标的直线距离，单位米
 | lat  | 目标纬度 | 统一使用gcj02 |
 | lng  | 目标经度 | 统一使用gcj02 |
 
+
+
+
+
+
+
+欢迎补充  984584014@qq.com 
+
+更多插件请前往 [github](https://github.com/web-liuyang/uni-app-tools)
+
+------
+
+<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-04-08</p>
