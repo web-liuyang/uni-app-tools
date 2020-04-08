@@ -54,6 +54,8 @@ this.$ly.reg.phone(12345678910) //false
 
 欢迎补充  984584014@qq.com
 
+更多插件请前往 [github](https://github.com/web-liuyang/uni-app-tools)
+
 ------
 
 <p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-04-02</p>
