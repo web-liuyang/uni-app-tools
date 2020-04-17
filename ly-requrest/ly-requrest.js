@@ -12,7 +12,7 @@ const defaultData = {
     header: {'content-type': "application/x-www-form-urlencoded"}, //默认请求头
     dataType: "json", //默认返回数据为JSON格式  
     dataPublic: {}, // 默认请求时带的公共参数 常用于设置token
-    files: [], // 需要上传的文件列表。使用 files 时，filePath 和 name 不生效。APP端支持
+    //files: [], // 需要上传的文件列表。使用 files 时，filePath 和 name 不生效。APP端支持
     sourceType: ["album", "camera"], //album 从相册选图，camera 使用相机，默认二者都有。如需直接开相机或直接选相册，请只使用一个选项
     formData: {}, //HTTP 请求中其他额外的 form data
     beforeAjax: (bf,task) => {}, //请求前置拦截

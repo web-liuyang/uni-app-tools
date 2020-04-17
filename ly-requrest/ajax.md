@@ -45,14 +45,15 @@ import {req} from "common/ly-tools/ly-requrest/ly-requrest.js"; //文件路径�
 req.defaultData.baseUrl = "http://127.0.0.1:8081"; //公共请求基础地址
 req.defaultData.dataPublic.token = "0000-1111-2222-3333" //设置token值
 //全局请求前置拦截
-req.defaultData.beforeAjax = (bf)=>{
-    console.log(bf)
+req.defaultData.beforeAjax = (data,task)=>{
+    console.log(data); //请求的信息
+    task.abort(); //结束请求
 }
 //全局请求后置拦截
 //后置拦截必须要设置,不然没有返回值
-req.defaultData.afterAjax = (af)=>{
-    console.log(af)
-    return af;
+req.defaultData.afterAjax = (data)=>{
+    console.log(data)
+    return data;
 }
 Vue.prototype.$ly = {req}; //挂载在原形上
 ```
@@ -62,7 +63,7 @@ Vue.prototype.$ly = {req}; //挂载在原形上
 ```js
 import {req} from "@/common/ly-tools/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
 const data = await req.ajax({
-    path:"http://127.0.0.1/getName"
+    path:"http://127.0.0.1:8081/getName"
 })
 console.log(data);
 ```
@@ -151,7 +152,7 @@ const data = await this.$ly.req.ajax({
     },
     error:(err,reject)=>{
         console.log(err); //错误信息
-        //调用reject函数则Promise请求结束,并且程序报错，请看错误信息（err）酌情调用
+        //调用reject函数则Promise请求结束,并且程序报错，请看错误信息酌情使用
         reject(); //报错 
     }
 })
@@ -174,17 +175,16 @@ this.$ly.req.ajax({
     },
     error:(err,reject)=>{
         console.log(err); //错误信息
-        //调用reject函数则Promise请求结束,并且程序报错，请看错误信息（err）酌情调用
+        //调用reject函数则Promise请求结束,并且程序报错，请看错误信息酌情使用
         reject(); //报错 
     }
 })
-console.log(data);
 ```
 
 
 
 
-> 在函数内的请求拦截的优先级要大于全局请求拦截
+> 单个请求拦截的优先级要大于全局请求拦截
 >
 > 请求前置拦截有两个返回值data,task
 >
@@ -225,9 +225,9 @@ console.log(data);
 |   属性名   |   类型   |                             描述                             | 兼容 |
 | :--------: | :------: | :----------------------------------------------------------: | :--: |
 |   title    |  string  |       是否显示请求提示，推荐8字以内，默认为false不显示       |      |
-|    path    |  string  |         请求路径，默认加上基础地址；可以请求外部地址         |      |
-|   method   |  string  |                     请求的方式，默认GET                      |      |
-|   header   |  object  | 请求头，默认为'content-type': "application/x-www-form-urlencoded" |      |
+|    path    |  string  |                  请求路径；可以请求外部地址                  |      |
+|   method   |  string  |                          请求的方式                          |      |
+|   header   |  object  |                            请求头                            |      |
 |  dataType  |  string  | 后端返回的数据类型，默认为json，会对返回的数据做一次JSON.parse |      |
 |    data    |  object  |        请求的参数，设置了dataPublic会默认带上公共参数        |      |
 | beforeAjax | function |  请求前置拦截，可拦截参数与结束请求操作，常用于验证某些数据  |      |
@@ -244,6 +244,7 @@ console.log(data);
 | 202              | 网络错误   |
 | 204              | 地址错误   |
 | 205              | 服务器错误 |
+| 0                | 未知错误   |
 
 > 错误信息只是归纳了一些常报的错误，具体的信息要自己检查，不能完全依靠此信息
 
