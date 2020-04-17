@@ -24,7 +24,7 @@ class Router {
                 // 结构参数
                 let [key, value] = [Object.keys(router.query), Object.values(router.query)];
                 if (encode) { //是否选择encodeURIComponent方式传参
-                    url += `?${key}=${encodeURIComponent(JSON.stringify(value))}`;
+                    url += `?${key}=${encodeURIComponent(JSON.stringify(value[0]))}`;
                 } else {
                     key.forEach((item, index, arr) => {
                         index == 0 ? url += `?${item}=${value[index]}` : url += `&${item}=${value[index]}`
