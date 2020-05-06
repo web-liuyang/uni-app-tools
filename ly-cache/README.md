@@ -60,12 +60,13 @@ console.log(data); //{msg:"清空成功",data:null}
 
 ### 参数说明
 
-#### cache.set(key,value)
+#### cache.set(key,value,timeout)
 
-| 参数名 |  类型  | 必填 |                             说明                             |
-| :----: | :----: | :--: | :----------------------------------------------------------: |
-|  key   | String |  是  |                    本地缓存中的指定的 key                    |
-| value  |  Any   |  是  | 需要存储的内容，只支持原生类型、及能够通过 JSON.stringify 序列化的对象 |
+| 参数名  |  类型  | 必填 |                             说明                             |
+| :-----: | :----: | :--: | :----------------------------------------------------------: |
+|   key   | String |  是  |                    本地缓存中的指定的 key                    |
+|  value  | Object |  是  | 需要存储的内容，只支持原生类型、及能够通过 JSON.stringify 序列化的对象 |
+| timeout | Number |  否  |                设置数据过期时间，0为永久存储                 |
 
 #### cache.get(key);
 
@@ -99,4 +100,4 @@ this.$ly.cache.set(key)
 
 ------
 
-<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-04-11</p>
+<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-05-06</p>

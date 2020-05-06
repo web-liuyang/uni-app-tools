@@ -55,6 +55,12 @@ req.defaultData.afterAjax = (data)=>{
     console.log(data)
     return data;
 }
+//全局错误拦截
+req.defaultData.err = (err,reject)=>{
+    console.log(err); //错误信息
+    //调用reject函数则Promise请求结束,并且程序报错，请看错误信息酌情使用
+    reject(); //报错  
+}
 Vue.prototype.$ly = {req}; //挂载在原形上
 ```
 

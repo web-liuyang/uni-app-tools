@@ -13,9 +13,6 @@ function msg(msg = "请传递消息",data = null){
     return {msg,data}
 }
 let map = new Map(), storage = uni.getStorageInfoSync(); //所有数据缓存
-/**
- * @class
- */
 class Cache {
     /**
      * @constructor
@@ -30,17 +27,18 @@ class Cache {
     // 设置缓存数据
     set(key, data, timeout = this.timeout) {
         //data = 数据value值，超时时间，加入缓存时间
-        data = {data,timeout,createTime:Date.now()};
+        Object.assign(data,{createTime:Date.now(),timeout});
         uni.setStorageSync(key,data);//保存到本地缓存
         this.map.set(key,data);//保存到map
+        return msg("保存成功",data);
     }
     get(key){
         let value = this.map.get(key); //取值
         if(!value)return msg("没有key值"); //如果没有值，那就就返回空
         // 数据，超时时间，加入缓存时间           现在时间                 时间差(秒)
-        let {data,timeout,createTime} = value,presentTime = Date.now(),tdoa = (presentTime -createTime) / 1000;
+        let {timeout,createTime,...data} = value,presentTime = Date.now(),tdoa = (presentTime -createTime) / 1000;
         // 超出缓存时间，那么就清除缓存返回空
-        if(tdoa > timeout){
+        if(timeout != 0 && tdoa > timeout){
             uni.removeStorageSync(key)
             this.map.delete(key) //删除map中对应的key值
             return msg("数据过期");
@@ -56,6 +54,7 @@ class Cache {
     clear(){
         uni.clearStorageSync();//清空缓存的数据
         this.map.clear() //清空map
+        return msg("清空成功");
     }
 }
 export const cache = new Cache();
