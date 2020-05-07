@@ -2,7 +2,7 @@
 
 #### return: [Object](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-
+**QQ群 [993987980](https://jq.qq.com/?_wv=1027&k=56A4Xhr)**
 
 ### 使用指南
 
@@ -96,8 +96,10 @@ this.$ly.cache.set(key)
 
 欢迎补充  984584014@qq.com 
 
+![入坑群993987980](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/91ff8a44a677919f0ada4bb62d426dfcd4b3b9b1826dcdda99c472989902fe9a20da660ef9248458b98e1e9244a4032e?pictype=scale&from=30013&version=3.3.3.3&uin=984584014&fname=uniapp%E6%8F%92%E4%BB%B6%E7%BE%A4%E8%81%8A%E4%BA%8C%E7%BB%B4%E7%A0%81.png&size=256)
+
 更多插件请前往 [github](https://github.com/web-liuyang/uni-app-tools)
 
 ------
 
-<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-05-06</p>
+<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-05-06</p
