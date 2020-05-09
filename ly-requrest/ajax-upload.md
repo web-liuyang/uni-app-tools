@@ -23,12 +23,12 @@ req.defaultData.beforeAjaxUpload = (data,task)=>{
 }
 //全局请求后置拦截
 //后置拦截必须要设置,不然没有返回值
-req.defaultData.afterAjax = (data)=>{
+req.defaultData.afterAjaxUpload = (data)=>{
     console.log(data)
     return data;
 }
 //全局错误拦截
-req.defaultData.err = (err,reject)=>{
+req.defaultData.error = (err,reject)=>{
     console.log(err); //错误信息
     //调用reject函数则Promise请求结束,并且程序报错，请看错误信息酌情使用
     reject(); //报错  
