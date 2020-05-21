@@ -6,20 +6,23 @@
  * 增加了图片上传,错误拦截,更改部分返回数据
  */
 const defaultData = {
+    isRemoveNull: false, //是否需要把null转为字符串""
     baseUrl: '', // 基础地址
     data: {}, //  传递的参数
     method: "GET", //默认请求方式
-    header: {'content-type': "application/x-www-form-urlencoded"}, //默认请求头
+    header: {
+        'content-type': "application/x-www-form-urlencoded"
+    }, //默认请求头
     dataType: "json", //默认返回数据为JSON格式  
     dataPublic: {}, // 默认请求时带的公共参数 常用于设置token
     //files: [], // 需要上传的文件列表。使用 files 时，filePath 和 name 不生效。APP端支持
     sourceType: ["album", "camera"], //album 从相册选图，camera 使用相机，默认二者都有。如需直接开相机或直接选相册，请只使用一个选项
     formData: {}, //HTTP 请求中其他额外的 form data
-    beforeAjax: (bf,task) => {}, //请求前置拦截
+    beforeAjax: (bf, task) => {}, //请求前置拦截
     afterAjax: data => {}, //请求后置拦截
-    beforeAjaxUpload : (bf,task) =>{},//上传前置拦截
-    afterAjaxUpload : data =>{},//上传后置拦截
-    error:(err,reject)=>{}//错误拦截
+    beforeAjaxUpload: (bf, task) => {}, //上传前置拦截
+    afterAjaxUpload: data => {}, //上传后置拦截
+    error: (err, reject) => {} //错误拦截
 }
 /**
  * @description 处理请求错误信息
@@ -27,36 +30,115 @@ const defaultData = {
  * @param {String} type 判断是什么方法的错误
  * @returns {Object} 返回错误信息
  */
-function errInfo(rtnInfo,type){
-    if(type === "ajax"){// 请求的错误拦截
-        if(rtnInfo.errMsg.indexOf("abort") != -1){ //是否为主动拦截
-            return {statusCode:201,msg:"拦截成功",data:rtnInfo,type};
-        }else if(rtnInfo.statusCode == 404){ //是否为地址错误
-            return {statusCode:204,msg:"地址错误",data:rtnInfo,type};
-        }else if(rtnInfo.statusCode == 500){ //是否为服务器错误
-            return {statusCode:205,msg:"服务器错误",data:rtnInfo,type};
-        }else{ //否则为网络错误
-            return {statusCode:202,msg:"网络错误",data:rtnInfo,type};
+function errInfo(rtnInfo, type) {
+    if (type === "ajax") { // 请求的错误拦截
+        if (rtnInfo.errMsg.indexOf("abort") != -1) { //是否为主动拦截
+            return {
+                statusCode: 201,
+                msg: "拦截成功",
+                data: rtnInfo,
+                type
+            };
+        } else if (rtnInfo.statusCode == 404) { //是否为地址错误
+            return {
+                statusCode: 204,
+                msg: "地址错误",
+                data: rtnInfo,
+                type
+            };
+        } else if (rtnInfo.statusCode == 500) { //是否为服务器错误
+            return {
+                statusCode: 205,
+                msg: "服务器错误",
+                data: rtnInfo,
+                type
+            };
+        } else { //否则为网络错误
+            return {
+                statusCode: 202,
+                msg: "网络错误",
+                data: rtnInfo,
+                type
+            };
         }
-    }else if(type === "upload"){ //上传图片的错误拦截
-        if(rtnInfo.errMsg.indexOf("cancel") != -1){ //是否为主动取消
-            return {statusCode:203,msg:"取消选择",data:rtnInfo,type};
-        }else if(rtnInfo.errMsg.indexOf("abort") != -1){ //是否为主动拦截
-            return {statusCode:201,msg:"拦截成功",data:rtnInfo,type};
-        }else if(rtnInfo.statusCode == 404){ //是否为地址错误
-            return {statusCode:204,msg:"地址错误",data:rtnInfo,type};
-        }else if(rtnInfo.statusCode == 500){ //是否为服务器错误
-            return {statusCode:205,msg:"服务器错误",data:rtnInfo,type};
-        }else if(rtnInfo.errMsg.indexOf("network") != -1){ //是否为网络错误
-            return {statusCode:202,msg:"网络错误",data:rtnInfo,type};
-        }else{ //否则为未知错误
-            return {statusCode:0,msg:"未知错误",data:rtnInfo,type};
+    } else if (type === "upload") { //上传图片的错误拦截
+        if (rtnInfo.errMsg.indexOf("cancel") != -1) { //是否为主动取消
+            return {
+                statusCode: 203,
+                msg: "取消选择",
+                data: rtnInfo,
+                type
+            };
+        } else if (rtnInfo.errMsg.indexOf("abort") != -1) { //是否为主动拦截
+            return {
+                statusCode: 201,
+                msg: "拦截成功",
+                data: rtnInfo,
+                type
+            };
+        } else if (rtnInfo.statusCode == 404) { //是否为地址错误
+            return {
+                statusCode: 204,
+                msg: "地址错误",
+                data: rtnInfo,
+                type
+            };
+        } else if (rtnInfo.statusCode == 500) { //是否为服务器错误
+            return {
+                statusCode: 205,
+                msg: "服务器错误",
+                data: rtnInfo,
+                type
+            };
+        } else if (rtnInfo.errMsg.indexOf("network") != -1) { //是否为网络错误
+            return {
+                statusCode: 202,
+                msg: "网络错误",
+                data: rtnInfo,
+                type
+            };
+        } else { //否则为未知错误
+            return {
+                statusCode: 0,
+                msg: "未知错误",
+                data: rtnInfo,
+                type
+            };
         }
-    }else{
+    } else {
         // 未知type
-        return {statusCode:0,msg:"未知错误",data:rtnInfo,type};
+        return {
+            statusCode: 0,
+            msg: "未知错误",
+            data: rtnInfo,
+            type
+        };
     }
     // console.log(rtnInfo)
+}
+
+/**
+ *  @param {Any} data 需要传入的去除null值的对象或者值
+ *  @param {Any} defaultStr 将null值转为该字符串, 不传默认为 空字符串 ''
+ */
+function removeNull(data, defaultStr = '') {
+    // 普通数据类型
+    if (typeof data != 'object' || data == null) {
+        if ((data == null || data == 'null')) {
+            return defaultStr;
+        } else {
+            return data;
+        }
+    }
+    // 引用数据类型
+    for (const v in data) {
+        if (data[v] == null || data[v] == 'null') {
+            data[v] = defaultStr;
+        }
+        if (typeof data[v] == 'object') {
+            removeNull(data[v])
+        }
+    }
 }
 /**
  * @class
@@ -64,7 +146,8 @@ function errInfo(rtnInfo,type){
 class Request {
     constructor() {
         // this.defaultData =defaultData;
-        this.defaultData ={...defaultData,name:"刘洋"};
+        this.defaultData = { ...defaultData
+        };
     }
     /**
      * @description 请求
@@ -88,13 +171,14 @@ class Request {
         dataType = this.defaultData.dataType,
         beforeAjax = this.defaultData.beforeAjax,
         afterAjax = this.defaultData.afterAjax,
-        error = this.defaultData.error
+        error = this.defaultData.error,
+        isRemoveNull = this.isRemoveNull
     } = {}) {
         return new Promise((resolve, reject) => {
             // 方便拿值，提升性能
             let defaultData = this.defaultData;
             //合并公共参数
-            Object.assign(data,defaultData.dataPublic);
+            Object.assign(data, defaultData.dataPublic);
             //拿到请求的信息
             const requestInfo = {
                 // 外部请求就不拼接基础地址
@@ -117,16 +201,29 @@ class Request {
                     // 状态不等于200说明有错误
                     if (rtnInfo.statusCode != 200) {
                         // 错误拦截
-                        error ? error(errInfo(rtnInfo,"ajax"),reject) : defaultData.error(errInfo(rtnInfo,"ajax"),reject)
+                        error ? error(errInfo(rtnInfo, "ajax"), reject) : defaultData.error(
+                            errInfo(rtnInfo, "ajax"), reject)
                     } else {
-                        //请求后置拦截
-                        afterAjax ? resolve(afterAjax(rtnInfo.data)) : resolve(defaultData.afterAjax(rtnInfo.data));
+                        // 判断是否是开启null转换并且传入的值类型是普通数据类型
+                        if (isRemoveNull && typeof data != 'object' || data == null) {
+                            //请求后置拦截  + Null处理
+                            afterAjax ? resolve(afterAjax(removeNull(rtnInfo.data))) : resolve(defaultData.afterAjax(removeNull(rtnInfo.data)));
+                        } else if(isRemoveNull) { //引用类型直接就修改了不用返回值
+                            removeNull(rtnInfo.data); // Null处理
+                            //请求后置拦截
+                            afterAjax ? resolve(afterAjax(rtnInfo.data)) : resolve(defaultData.afterAjax(rtnInfo.data));
+                        }else{
+                            //请求后置拦截
+                            afterAjax ? resolve(afterAjax(rtnInfo.data)) : resolve(defaultData.afterAjax(rtnInfo.data));
+                        }
+
                     }
                     uni.hideLoading() //隐藏加载loading框
                 }
             })
             //请求前拦截
-            beforeAjax ? beforeAjax(requestInfo,requestTask) : defaultData.beforeAjax(requestInfo,requestTask)
+            beforeAjax ? beforeAjax(requestInfo, requestTask) : defaultData.beforeAjax(requestInfo,
+                requestTask)
         })
     }
     /**
@@ -161,14 +258,15 @@ class Request {
             // 获取文件路径
             uni.chooseImage({
                 count: 1,
-                sourceType,//album 从相册选图，camera 使用相机，默认二者都有。如需直接开相机或直接选相册，请只使用一个选项
+                sourceType, //album 从相册选图，camera 使用相机，默认二者都有。如需直接开相机或直接选相册，请只使用一个选项
                 complete: (rtnInfo) => {
                     // console.log(rtnInfo);
                     // 如果没有查到ok，意味着打开文件选择失败
-                    if(rtnInfo.errMsg.indexOf("ok") == -1){
+                    if (rtnInfo.errMsg.indexOf("ok") == -1) {
                         // 错误拦截
-                        error ? error(errInfo(rtnInfo,"upload"),reject) : defaultData.error(errInfo(rtnInfo,"upload"),reject);
-                    }else{
+                        error ? error(errInfo(rtnInfo, "upload"), reject) : defaultData.error(
+                            errInfo(rtnInfo, "upload"), reject);
+                    } else {
                         // 拿到上传的信息
                         const uploadInfo = {
                             // 外部请求就不拼接基础地址
@@ -188,18 +286,23 @@ class Request {
                             complete: (rtnInfo) => {
                                 // console.log(rtnInfo)
                                 // 状态不等于200说明报错
-                                if(rtnInfo.statusCode != 200){
+                                if (rtnInfo.statusCode != 200) {
                                     // 错误拦截
-                                    error ? error(errInfo(rtnInfo,"upload"),reject) : defaultData.error(errInfo(rtnInfo,"upload"),reject);
-                                }else{
+                                    error ? error(errInfo(rtnInfo, "upload"),
+                                        reject) : defaultData.error(errInfo(
+                                        rtnInfo, "upload"), reject);
+                                } else {
                                     //请求后置拦截
-                                    afterAjaxUpload ? resolve(afterAjaxUpload(rtnInfo.data)) : resolve(defaultData.afterAjaxUpload(rtnInfo.data));
+                                    afterAjaxUpload ? resolve(afterAjaxUpload(
+                                        rtnInfo.data)) : resolve(defaultData.afterAjaxUpload(
+                                        rtnInfo.data));
                                 }
                                 uni.hideLoading(); //隐藏加载loading框
                             }
                         });
                         //上传前置拦截
-                        beforeAjaxUpload ? beforeAjaxUpload(uploadInfo,uploadTask) : defaultData.beforeAjaxUpload(uploadInfo,uploadTask)
+                        beforeAjaxUpload ? beforeAjaxUpload(uploadInfo, uploadTask) :
+                            defaultData.beforeAjaxUpload(uploadInfo, uploadTask)
                     }
                 }
             })
