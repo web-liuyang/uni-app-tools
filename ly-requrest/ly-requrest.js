@@ -4,6 +4,8 @@
  * @copyright LiuYang 2020
  * @version 1.1.0
  * 增加了图片上传,错误拦截,更改部分返回数据
+ * @version 1.2.0
+ * 增加返回值null处理成字符串功能,优化了代码提高运行速度
  */
 const defaultData = {
     isRemoveNull: false, //是否需要把null转为字符串""

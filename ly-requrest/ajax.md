@@ -35,6 +35,11 @@
 
    
 
+**版本号1.2.0**
+
+1. 增加了后端返回值为`NULL`修改为字符串`“”`的处理。
+2. 优化了部分代码，提高运行速度。
+
 ### 使用指南
 
 ##### 全局使用（推荐）
@@ -44,6 +49,7 @@
 import {req} from "common/ly-tools/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
 req.defaultData.baseUrl = "http://127.0.0.1:8081"; //公共请求基础地址
 req.defaultData.dataPublic.token = "0000-1111-2222-3333" //设置token值
+req.defaultData.isRemoveNull = true; //是否处理后端传入数据为null的情况
 //全局请求前置拦截
 req.defaultData.beforeAjax = (data,task)=>{
     console.log(data); //请求的信息
@@ -248,9 +254,12 @@ this.$ly.req.ajax({
 | ---------------- | ---------- |
 | 201              | 拦截成功   |
 | 202              | 网络错误   |
+| 203              | 取消选择   |
 | 204              | 地址错误   |
 | 205              | 服务器错误 |
 | 0                | 未知错误   |
+
+
 
 > 错误信息只是归纳了一些常报的错误，具体的信息要自己检查，不能完全依靠此信息
 
@@ -266,7 +275,7 @@ this.$ly.req.ajax({
 
 ![入坑群993987980](https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/91ff8a44a677919f0ada4bb62d426dfcd4b3b9b1826dcdda99c472989902fe9a20da660ef9248458b98e1e9244a4032e?pictype=scale&from=30013&version=3.3.3.3&uin=984584014&fname=uniapp%E6%8F%92%E4%BB%B6%E7%BE%A4%E8%81%8A%E4%BA%8C%E7%BB%B4%E7%A0%81.png&size=256)
 
-### 更多插件请前往 [github](https://github.com/web-liuyang/uni-app-tools)
+### 更多插件请前往  [GitHub](https://github.com/web-liuyang/uni-app-tools)
 
 ------
 
