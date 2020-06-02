@@ -31,94 +31,24 @@ const defaultData = {
  * @returns {Object} 返回错误信息
  */
 function errInfo(rtnInfo, type) {
-    if (type === "ajax") { // 请求的错误拦截
-        if (rtnInfo.errMsg.indexOf("abort") != -1) { //是否为主动拦截
-            return {
-                statusCode: 201,
-                msg: "拦截成功",
-                data: rtnInfo,
-                type
-            };
-        } else if (rtnInfo.statusCode == 404) { //是否为地址错误
-            return {
-                statusCode: 204,
-                msg: "地址错误",
-                data: rtnInfo,
-                type
-            };
-        } else if (rtnInfo.statusCode == 500) { //是否为服务器错误
-            return {
-                statusCode: 205,
-                msg: "服务器错误",
-                data: rtnInfo,
-                type
-            };
-        } else { //否则为网络错误
-            return {
-                statusCode: 202,
-                msg: "网络错误",
-                data: rtnInfo,
-                type
-            };
-        }
-    } else if (type === "upload") { //上传图片的错误拦截
-        if (rtnInfo.errMsg.indexOf("cancel") != -1) { //是否为主动取消
-            return {
-                statusCode: 203,
-                msg: "取消选择",
-                data: rtnInfo,
-                type
-            };
-        } else if (rtnInfo.errMsg.indexOf("abort") != -1) { //是否为主动拦截
-            return {
-                statusCode: 201,
-                msg: "拦截成功",
-                data: rtnInfo,
-                type
-            };
-        } else if (rtnInfo.statusCode == 404) { //是否为地址错误
-            return {
-                statusCode: 204,
-                msg: "地址错误",
-                data: rtnInfo,
-                type
-            };
-        } else if (rtnInfo.statusCode == 500) { //是否为服务器错误
-            return {
-                statusCode: 205,
-                msg: "服务器错误",
-                data: rtnInfo,
-                type
-            };
-        } else if (rtnInfo.errMsg.indexOf("network") != -1) { //是否为网络错误
-            return {
-                statusCode: 202,
-                msg: "网络错误",
-                data: rtnInfo,
-                type
-            };
-        } else { //否则为未知错误
-            return {
-                statusCode: 0,
-                msg: "未知错误",
-                data: rtnInfo,
-                type
-            };
-        }
-    } else {
-        // 未知type
-        return {
-            statusCode: 0,
-            msg: "未知错误",
-            data: rtnInfo,
-            type
-        };
+    switch(true){
+        case (rtnInfo.errMsg.indexOf("abort") != -1): //是否为主动拦截
+        return {statusCode: 201,msg: "拦截成功",data: rtnInfo,type};
+        case rtnInfo.errMsg.indexOf("network") != -1 : //是否为网络错误
+        return {statusCode: 202,msg: "网络错误", data: rtnInfo,type};
+        case (rtnInfo.errMsg.indexOf("cancel") != -1): //是否为主动取消
+        return {statusCode: 203,msg: "取消选择",data: rtnInfo,type};
+        case rtnInfo.statusCode == 404 : //是否为地址错误
+        return {statusCode: 204,msg: "地址错误",data: rtnInfo,type};
+        case rtnInfo.statusCode == 500 : //是否为服务器错误
+        return {statusCode: 205,msg: "服务器错误",data: rtnInfo,type};
+        default: //未知错误
+        return {statusCode: 0,msg: "未知错误",data: rtnInfo,type};
     }
-    // console.log(rtnInfo)
 }
 
 /**
- *  @param {Any} data 需要传入的去除null值的对象或者值
+ *  @param {Any} data 需要传入的去除null值的对象或者值 递归函数
  *  @param {Any} defaultStr 将null值转为该字符串, 不传默认为 空字符串 ''
  */
 function removeNull(data, defaultStr = '') {
@@ -146,13 +76,11 @@ function removeNull(data, defaultStr = '') {
 class Request {
     constructor() {
         // this.defaultData =defaultData;
-        this.defaultData = { ...defaultData
-        };
+        this.defaultData = { ...defaultData};
     }
     /**
      * @description 请求
      * @param {String} title 是否需要显示loading加载提示框 title值就是loading的值
-     * @param {String} titleLast 是否需要显示showToast加载提示框 titleLast值就是showToast的值
      * @param {String} path 请求的地址 
      * @param {Object} data 请求带过去的参数 默认为空对象
      * @param {String} method = [GET|POST] 请求的方式 
@@ -165,7 +93,6 @@ class Request {
      */
     ajax({
         title = false,
-        titleLast=false,
         path = '',
         data = this.defaultData.data,
         method = this.defaultData.method,
@@ -203,26 +130,24 @@ class Request {
                     // 状态不等于200说明有错误
                     if (rtnInfo.statusCode != 200) {
                         // 错误拦截
-                        error ? error(errInfo(rtnInfo, "ajax"), reject) : defaultData.error(
-                            errInfo(rtnInfo, "ajax"), reject)
+                        error ? error(errInfo(rtnInfo, "ajax"), reject) : defaultData.error(errInfo(rtnInfo, "ajax"), reject)
                     } else {
-                        // 判断是否是开启null转换并且传入的值类型是普通数据类型
-                        if (isRemoveNull && typeof data != 'object' || data == null) {
+                        switch(true){
+                            case isRemoveNull && typeof data != 'object' || data == null : // 判断是否是开启null转换并且传入的值类型是普通数据类型
                             //请求后置拦截  + Null处理
                             afterAjax ? resolve(afterAjax(removeNull(rtnInfo.data))) : resolve(defaultData.afterAjax(removeNull(rtnInfo.data)));
-                        } else if(isRemoveNull) { //引用类型直接就修改了不用返回值
-                            removeNull(rtnInfo.data); // Null处理
+                            break;
+                            case isRemoveNull : //引用类型直接就修改了不用返回值
+                            // Null处理
+                            removeNull(rtnInfo.data); 
                             //请求后置拦截
                             afterAjax ? resolve(afterAjax(rtnInfo.data)) : resolve(defaultData.afterAjax(rtnInfo.data));
-                        }else{
+                            break;
+                            default:
                             //请求后置拦截
                             afterAjax ? resolve(afterAjax(rtnInfo.data)) : resolve(defaultData.afterAjax(rtnInfo.data));
+                            break;
                         }
-                        // 如果titleLast值存在，就显示showToast，titleLast就是显示的值
-                        if (titleLast)(uni.showToast({
-                            titleLast,
-                            duration:2000
-                        }));
                     }
                     uni.hideLoading() //隐藏加载loading框
                 }
@@ -269,8 +194,7 @@ class Request {
                     // 如果没有查到ok，意味着打开文件选择失败
                     if (rtnInfo.errMsg.indexOf("ok") == -1) {
                         // 错误拦截
-                        error ? error(errInfo(rtnInfo, "upload"), reject) : defaultData.error(
-                            errInfo(rtnInfo, "upload"), reject);
+                        error ? error(errInfo(rtnInfo, "upload"), reject) : defaultData.error(errInfo(rtnInfo, "upload"), reject);
                     } else {
                         // 拿到上传的信息
                         const uploadInfo = {
@@ -293,9 +217,7 @@ class Request {
                                 // 状态不等于200说明报错
                                 if (rtnInfo.statusCode != 200) {
                                     // 错误拦截
-                                    error ? error(errInfo(rtnInfo, "upload"),
-                                        reject) : defaultData.error(errInfo(
-                                        rtnInfo, "upload"), reject);
+                                    error ? error(errInfo(rtnInfo, "upload"),reject) : defaultData.error(errInfo(rtnInfo, "upload"), reject);
                                 } else {
                                     //请求后置拦截
                                     afterAjaxUpload ? resolve(afterAjaxUpload(rtnInfo.data)) : resolve(defaultData.afterAjaxUpload(rtnInfo.data));
