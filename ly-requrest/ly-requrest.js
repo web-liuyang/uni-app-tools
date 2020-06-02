@@ -152,6 +152,7 @@ class Request {
     /**
      * @description 请求
      * @param {String} title 是否需要显示loading加载提示框 title值就是loading的值
+     * @param {String} titleLast 是否需要显示showToast加载提示框 titleLast值就是showToast的值
      * @param {String} path 请求的地址 
      * @param {Object} data 请求带过去的参数 默认为空对象
      * @param {String} method = [GET|POST] 请求的方式 
@@ -164,6 +165,7 @@ class Request {
      */
     ajax({
         title = false,
+        titleLast=false,
         path = '',
         data = this.defaultData.data,
         method = this.defaultData.method,
@@ -216,14 +218,17 @@ class Request {
                             //请求后置拦截
                             afterAjax ? resolve(afterAjax(rtnInfo.data)) : resolve(defaultData.afterAjax(rtnInfo.data));
                         }
-
+                        // 如果titleLast值存在，就显示showToast，titleLast就是显示的值
+                        if (titleLast)(uni.showToast({
+                            titleLast,
+                            duration:2000
+                        }));
                     }
                     uni.hideLoading() //隐藏加载loading框
                 }
             })
             //请求前拦截
-            beforeAjax ? beforeAjax(requestInfo, requestTask) : defaultData.beforeAjax(requestInfo,
-                requestTask)
+            beforeAjax ? beforeAjax(requestInfo, requestTask) : defaultData.beforeAjax(requestInfo,requestTask)
         })
     }
     /**
@@ -293,16 +298,13 @@ class Request {
                                         rtnInfo, "upload"), reject);
                                 } else {
                                     //请求后置拦截
-                                    afterAjaxUpload ? resolve(afterAjaxUpload(
-                                        rtnInfo.data)) : resolve(defaultData.afterAjaxUpload(
-                                        rtnInfo.data));
+                                    afterAjaxUpload ? resolve(afterAjaxUpload(rtnInfo.data)) : resolve(defaultData.afterAjaxUpload(rtnInfo.data));
                                 }
                                 uni.hideLoading(); //隐藏加载loading框
                             }
                         });
                         //上传前置拦截
-                        beforeAjaxUpload ? beforeAjaxUpload(uploadInfo, uploadTask) :
-                            defaultData.beforeAjaxUpload(uploadInfo, uploadTask)
+                        beforeAjaxUpload ? beforeAjaxUpload(uploadInfo, uploadTask) : defaultData.beforeAjaxUpload(uploadInfo, uploadTask)
                     }
                 }
             })
