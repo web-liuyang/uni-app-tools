@@ -109,7 +109,7 @@ class Request {
             // 方便拿值，提升性能
             let defaultData = this.defaultData;
             //合并公共参数
-            Object.assign(data, defaultData.dataPublic);
+            data = {...defaultData.dataPublic,...data};
             //拿到请求的信息
             const requestInfo = {
                 // 外部请求就不拼接基础地址
