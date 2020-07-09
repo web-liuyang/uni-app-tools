@@ -83,6 +83,7 @@ class Request {
     /**
      * @description 请求
      * @param {String} title 是否需要显示loading加载提示框 title值就是loading的值
+     * @param {String} outTitle 是否需要显示加载成功提示框 outTitle值就是提示的值
      * @param {String} path 请求的地址 
      * @param {Object} data 请求带过去的参数 默认为空对象
      * @param {String} method = [GET|POST] 请求的方式 
@@ -95,6 +96,7 @@ class Request {
      */
     ajax({
         title = false,
+        outTitle = false,
         path = '',
         data = this.defaultData.data,
         method = this.defaultData.method,
@@ -150,6 +152,8 @@ class Request {
                             afterAjax ? resolve(afterAjax(rtnInfo.data)) : resolve(defaultData.afterAjax(rtnInfo.data));
                             break;
                         }
+                        // 如果outTitle值存在，就显示提示，outTitle就是显示的值
+                        if (outTitle)(uni.showToast({title: outTitle}));
                     }
                     uni.hideLoading() //隐藏加载loading框
                 }
@@ -161,6 +165,7 @@ class Request {
     /**
      * @description 图片上传
      * @param {String} title 是否需要显示loading加载提示框 title值就是loading的值
+     * @param {String} outTitle 是否需要显示加载成功提示框 outTitle值就是提示的值
      * @param {String} path 请求的地址 
      * @param {String} name 文件对应的 key , 开发者在服务器端通过这个 key 可以获取到文件二进制内容。
      * @param {Object} header 请求头信息
@@ -223,6 +228,8 @@ class Request {
                                 } else {
                                     //请求后置拦截
                                     afterAjaxUpload ? resolve(afterAjaxUpload(rtnInfo.data)) : resolve(defaultData.afterAjaxUpload(rtnInfo.data));
+                                    // 如果outTitle值存在，就显示提示，outTitle就是显示的值
+                                    if (outTitle)(uni.showToast({title: outTitle}));
                                 }
                                 uni.hideLoading(); //隐藏加载loading框
                             }
