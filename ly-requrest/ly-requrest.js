@@ -24,6 +24,8 @@ const defaultData = {
     afterAjax: data => {}, //请求后置拦截
     beforeAjaxUpload: (bf, task) => {}, //上传前置拦截
     afterAjaxUpload: data => {}, //上传后置拦截
+    beforeAjaxDownload: (bf, task) => {}, //下载前置拦截
+    afterAjaxDownload: data => {}, //下载后置拦截
     error: (err, reject) => {} //错误拦截
 }
 /**
@@ -154,6 +156,7 @@ class Request {
                         }
                         // 如果outTitle值存在，就显示提示，outTitle就是显示的值
                         if (outTitle)(uni.showToast({title: outTitle}));
+                        
                     }
                     uni.hideLoading() //隐藏加载loading框
                 }
@@ -166,7 +169,7 @@ class Request {
      * @description 图片上传
      * @param {String} title 是否需要显示loading加载提示框 title值就是loading的值
      * @param {String} outTitle 是否需要显示加载成功提示框 outTitle值就是提示的值
-     * @param {String} path 请求的地址 
+     * @param {String} path 上传的地址 
      * @param {String} name 文件对应的 key , 开发者在服务器端通过这个 key 可以获取到文件二进制内容。
      * @param {Object} header 请求头信息
      * @param {Object} formData HTTP请求中其他额外的formData
@@ -240,6 +243,56 @@ class Request {
                 }
             })
         })
+    }
+    /**
+     * @description 文件下载
+     * @param {String} title 是否需要显示loading加载提示框 title值就是loading的值
+     * @param {String} outTitle 是否需要显示加载成功提示框 outTitle值就是提示的值
+     * @param {String} path 下载的地址 
+     * @param {Object} header 请求头信息
+     * @param {Function(Event)} error 错误回调
+     * @returns {Promise}  返回一个Promise对象
+     */
+    ajaxDownload({
+        title = false,
+        outTitle = false,
+        path = '',
+        header = this.defaultData.header,
+        beforeAjaxDownload = this.defaultData.beforeAjaxDownload,
+        afterAjaxDownload = this.defaultData.afterAjaxDownload,
+        error = this.defaultData.error,
+    } = {}){
+        return new Promise((resolve, reject) => {
+            // 方便拿值，提升性能
+            let defaultData = this.defaultData;
+            const downloadInfo = {
+                // 外部请求就不拼接基础地址
+                url: /^http/.test(path) ? path : defaultData.baseUrl + path, //拼接请求地址
+                header, //请求头
+            }
+            // 如果title值存在，就显示loading，标题就是显示的值
+            if (title)(uni.showLoading({title,mask: true}));
+            let downloadTask = uni.downloadFile({
+                ...downloadInfo,
+                complete:(rtnInfo)=>{
+                    // console.log(rtnInfo)
+                    // 状态不等于200说明报错
+                    if (rtnInfo.statusCode != 200) {
+                        // 错误拦截
+                        error ? error(errInfo(rtnInfo, "download"),reject) : defaultData.error(errInfo(rtnInfo, "download"), reject);
+                    } else {
+                        //请求后置拦截
+                        afterAjaxDownload ? resolve(afterAjaxDownload(rtnInfo.tempFilePath)) : resolve(defaultData.afterAjaxDownload(rtnInfo.tempFilePath));
+                        // 如果outTitle值存在，就显示提示，outTitle就是显示的值
+                        if (outTitle)(uni.showToast({title: outTitle}));
+                    }
+                    uni.hideLoading(); //隐藏加载loading框
+                }
+            })
+            //下载前置拦截
+            beforeAjaxDownload ? beforeAjaxDownload(downloadInfo, downloadTask) : defaultData.beforeAjaxDownload(downloadInfo, downloadTask);
+            
+        });
     }
 }
 export const req = new Request();
