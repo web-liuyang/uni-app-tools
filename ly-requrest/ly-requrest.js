@@ -181,6 +181,7 @@ class Request {
      */
     ajaxUpload({
         title = false, // 是否显示加载提示框
+        outTitle = false, //  是否需要显示加载成功提示框 outTitle值就是提示的值
         path = '', // 路径
         //files=this.defaultData.files, 暂不开放 //需要上传的文件列表。使用 files 时，filePath 和 name 不生效。只支持APP。
         // filePath = "", //要上传文件资源的路径。必填
