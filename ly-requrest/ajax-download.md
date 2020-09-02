@@ -1,4 +1,4 @@
-### ajaxUpload 使用方式
+### ajaxDownload 使用方式
 
 #### return: [Promise](https://www.runoob.com/w3cnote/javascript-promise-object.html)
 
@@ -17,13 +17,13 @@
 import {req} from "common/ly-tools/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
 req.defaultData.baseUrl = "http://http://127.0.0.1:8081"; //公共请求基础地址
 //全局上传前置拦截
-req.defaultData.beforeAjaxUpload = (data,task)=>{
+req.defaultData.beforeAjaxDownload = (data,task)=>{
     console.log(data); //请求的信息
     task.abort(); //结束请求
 }
 //全局请求后置拦截
 //后置拦截必须要设置,不然没有返回值
-req.defaultData.afterAjaxUpload = (data)=>{
+req.defaultData.afterAjaxDownload = (data)=>{
     console.log(data)
     return data;
 }
@@ -40,11 +40,10 @@ Vue.prototype.$ly = {req}; //挂载在原形上
 
 ```js
 import {req} from "@/common/ly-tools/ly-requrest/ly-requrest.js"; //文件路径请换成本地路径
-const data = await req.ajaxUpload({
+const data = await req.ajaxDownload({
     path:"http://127.0.0.1:8081/upload",
-    name:"img"
 })
-console.log(data);
+console.log(data); // 下载后的路径
 ```
 
 
@@ -54,9 +53,8 @@ console.log(data);
 ##### 	1.简单使用
 
 ```js
-const data = await this.$ly.req.ajaxUpload({
-    path:"/upload",
-    name:"img"
+const data = await this.$ly.req.ajaxDownload({
+    path:"/download",
 })
 console.log(data);
 ```
@@ -64,36 +62,22 @@ console.log(data);
 ##### 	2.带请求提示
 
 ```js
-const data = await this.$ly.req.ajaxUpload({
-    title:"上传中",
-    path:"/upload",
-    name:"img"
+const data = await this.$ly.req.ajaxDownload({
+    title:"下载中",
+  	outTitle:"下载完成",
+    path:"/download",
 })
 console.log(data);
 ```
 
-##### 	3.带HTTP 请求中其他额外的 formData
+##### 3.带下载前置拦截
 
 ```js
-const data = await this.$ly.req.ajaxUpload({
-    path:"/upload",
-    name:"img",
-	formData:{
-        user:"LiuYang"
-    }
-})
-console.log(data);
-```
-
-##### 4.带上传前置拦截
-
-```js
-const data = await this.$ly.req.ajaxUpload({
-    path:"/upload",
-    name:"img",
-    beforeAjaxUpload:(data,task)=>{
+const data = await this.$ly.req.ajaxDownload({
+    path:"/download",
+    beforeAjaxDownload:(data,task)=>{
         console.log(data);  //请求前的数据
-        console.log(task);	//uploadTask对象
+        console.log(task);	//downloadTask对象
         //task.abort() 结束上传
     }
 })
@@ -103,14 +87,12 @@ console.log(data);
 ##### 5.带上传后置拦截
 
 ```js
-const data = await this.$ly.req.ajaxUpload({
-    path:"/upload",
-    name:"img",
+const data = await this.$ly.req.ajaxDownload({
+    path:"/download",
     afterAjaxUpload:(af)=>{
-        console.log(af) //后端返回的信息
-        //可以在这里处理后端返回的信息
+        console.log(af) //返回的路径信息
         //处理完成以后必须要返回，不然data数据为空
-		return af;
+				return af;
     }
 })
 console.log(data);
@@ -119,11 +101,10 @@ console.log(data);
 ##### 6.错误信息监听
 
 ```js
-const data = await this.$ly.req.ajaxUpload({
-    path:"/upload123456789",
-	name:"img",
+const data = await this.$ly.req.ajaxDownload({
+    path:"/download",
     error:(err,reject)=>{
-        console.log(err); //错误信息如下
+        console.log(err); //错误信息基本如下
         // {
         //     statusCode:204,
         //     msg:"地址错误",
@@ -140,12 +121,11 @@ console.log(data);
 ##### 7.异步调用
 
 ```js
-this.$ly.req.ajaxUpload({
-    path:"/upload",
-	name:"img",
+this.$ly.req.ajaxDownload({
+    path:"/download",
     afterAjax:(af)=>{
-        console.log(af) //后端返回的信息
-        //可以在这里异步处理后端返回的信息
+        console.log(af) //返回的l路径信息
+        //可以在这里异步处理返回的路径信息
         //处理完成以后可以不用返回
     },
     error:(err,reject)=>{
@@ -159,11 +139,11 @@ this.$ly.req.ajaxUpload({
 
 
 
-> 单个请求拦截的优先级要大于全局请求拦截
+> 单个拦截的优先级要大于全局拦截
 >
-> 请求前置拦截有两个返回值data,task
+> 前置拦截有两个返回值data,task
 >
-> 请求后置拦截只有一个返回值af，那就是请求成功后返回的数据
+> 后置拦截只有一个返回值af，那就是请求成功后返回的数据
 >
 > 错误拦截处理有两个返回值err,reject
 
@@ -180,37 +160,28 @@ this.$ly.req.ajaxUpload({
 ### 全局配置表 defaultData
 
 
-|      属性名      |     类型      |               描述               |                        默认值                         |
-| :--------------: | :-----------: | :------------------------------: | :---------------------------------------------------: |
-|     baseUrl      |    String     |   基础地址（一般为服务器地址）   |                                                       |
-|    sourceType    | Array<String> | album 从相册选图;camera 使用相机 |                  [“album”,”camera”]                   |
-|      header      |    Object     |              请求头              | {'content-type': "application/x-www-form-urlencoded"} |
-|     formData     |    Object     | HTTP 请求中其他额外的 form data  |                                                       |
-| beforeAjaxUpload |   Function    |           上传前置拦截           |                                                       |
-| afterAjaxUpload  |   Function    |           上传后置拦截           |                                                       |
-|      error       |   Function    |             错误拦截             |                                                       |
+|       属性名       |   类型   |             描述             |                        默认值                         |
+| :----------------: | :------: | :--------------------------: | :---------------------------------------------------: |
+|      baseUrl       |  String  | 基础地址（一般为服务器地址） |                                                       |
+|       header       |  Object  |            请求头            | {'content-type': "application/x-www-form-urlencoded"} |
+| beforeAjaxDownload | Function |         下载前置拦截         |                                                       |
+| afterAjaxDownload  | Function |         下载后置拦截         |                                                       |
+|       error        | Function |           错误拦截           |                                                       |
 
 
 
 
-### ajaxUpload参数
+### ajaxDownload参数
 
-|      属性名      |   类型   |                       描述                       |
-| :--------------: | :------: | :----------------------------------------------: |
-|      title       |  String  | 是否显示上传提示，推荐8字以内，默认为false不显示 |
-|     outTitle     |  String  | 是否显示成功提示，推荐8字以内，默认为false不显示 |
-|       path       |  String  |            请求路径；可以请求外部地址            |
-|       name       |  String  |                    请求的方式                    |
-|      header      |  Object  |                      请求头                      |
-|     formData     |  Object  |           HTTP请求中其他额外的formData           |
-|    sourceType    |  Object  |  album从相册选图，camera使用相机，默认二者都有   |
-| beforeAjaxUpload | Function |                   上传前置拦截                   |
-| afterAjaxUpload  | Function |                 上传后置拦截回调                 |
-|      error       | Function |                 错误信息拦截处理                 |
-
-
-
-
+|       属性名       |   类型   |                       描述                       |
+| :----------------: | :------: | :----------------------------------------------: |
+|       title        |  String  | 是否显示请求提示，推荐8字以内，默认为false不显示 |
+|      outTitle      |  String  |  请求成功后提示，推荐8字以内，默认为false不显示  |
+|        path        |  String  |            下载路径；可以下载外部地址            |
+|       header       |  Object  |                      请求头                      |
+| beforeAjaxDownload | Function |                   下载前置拦截                   |
+| afterAjaxDownload  | Function |                 下载后置拦截回调                 |
+|       error        | Function |                 错误信息拦截处理                 |
 
 
 

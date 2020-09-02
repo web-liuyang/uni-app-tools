@@ -8,38 +8,6 @@
 
 
 
-### 更新说明
-
-**版本号1.1.0**
-
-1. 增加了错误拦截与错误处理
-
-2. 废弃了一些不必要的回调参数
-
-   ```js
-   //请求前置拦截回调参数 1.0.0
-   beforeAjax:(bf)=>{
-       console.log(bf)  
-       //bf = {requestInfo,requestTask} 
-       //requestInfo -> 请求的信息
-       //requestTask -> 请求返回值
-       //requestTask.abort() 结束请求
-   }
-   //请求前置拦截回调参数 1.1.0
-   beforeAjax:(data,task)=>{
-       console.log(data);  //请求前的数据
-       console.log(task);	//requestTask对象
-       //task.abort() 结束请求
-   }
-   ```
-
-   
-
-**版本号1.2.0**
-
-1. 增加了后端返回值为`NULL`修改为字符串`“”`的处理。
-2. 优化了部分代码，提高运行速度。
-
 ### 使用指南
 
 ##### 全局使用（推荐）
@@ -234,17 +202,18 @@ this.$ly.req.ajax({
 
 ### ajax参数
 
-|   属性名   |   类型   |                             描述                             | 兼容 |
-| :--------: | :------: | :----------------------------------------------------------: | :--: |
-|   title    |  string  |       是否显示请求提示，推荐8字以内，默认为false不显示       |      |
-|    path    |  string  |                  请求路径；可以请求外部地址                  |      |
-|   method   |  string  |                          请求的方式                          |      |
-|   header   |  object  |                            请求头                            |      |
-|  dataType  |  string  | 后端返回的数据类型，默认为json，会对返回的数据做一次JSON.parse |      |
-|    data    |  object  |        请求的参数，设置了dataPublic会默认带上公共参数        |      |
-| beforeAjax | function |  请求前置拦截，可拦截参数与结束请求操作，常用于验证某些数据  |      |
-| afterAjax  | function |          请求后置拦截，常用于为后端返回的数据做处理          |      |
-|   error    | function |                       错误信息拦截处理                       |      |
+|   属性名   |   类型   |                             描述                             |
+| :--------: | :------: | :----------------------------------------------------------: |
+|   title    |  string  |       是否显示请求提示，推荐8字以内，默认为false不显示       |
+|  outTitle  |  String  |       是否显示成功提示，推荐8字以内，默认为false不显示       |
+|    path    |  string  |                  请求路径；可以请求外部地址                  |
+|   method   |  string  |                          请求的方式                          |
+|   header   |  object  |                            请求头                            |
+|  dataType  |  string  | 后端返回的数据类型，默认为json，会对返回的数据做一次JSON.parse |
+|    data    |  object  |        请求的参数，设置了dataPublic会默认带上公共参数        |
+| beforeAjax | function |  请求前置拦截，可拦截参数与结束请求操作，常用于验证某些数据  |
+| afterAjax  | function |          请求后置拦截，常用于为后端返回的数据做处理          |
+|   error    | function |                       错误信息拦截处理                       |
 
 
 
@@ -279,5 +248,5 @@ this.$ly.req.ajax({
 
 ------
 
-<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-04-17</p>
+<p style="text-align:right;font-size:14px;color:#999999;">文档更新时间：2020-09-03</p>
 
