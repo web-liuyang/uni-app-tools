@@ -23,7 +23,6 @@ uniapp官方提供的API虽然能够满足我们绝大部分需求，但是其�
 1. `ly-requrest` 常用的请求封装、token设置等。
 2. `ly-common` 常用的API封装，节点获取，距离计算等。
 3. `ly-regexp` 常用的正则表达式判断、金额、汉字等。
-4. `ly-socket` WebSocket封装，全局监听等。（暂未完善，开发中）
 5. `ly-router` 以Vue.router为模板封装的路由跳转与传参。
 6. `ly-API` 在网上收集到的API，仅供测试用。
 7. `ly-cache` 缓存器，优化减少HTTP请求。
