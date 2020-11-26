@@ -76,7 +76,7 @@ const straightDistance = (lat2, lng2) => {
 /**
  * @description 页面实例获取
  * @param { Number | String } num 默认获取上一页面实例，数字几就返回前几页的实例
- * @return {Object} 返回页面实例
+ * @returns {Object} 返回页面实例
  */
 const getPageInstance = (num = 1) => {
 	const pages = getCurrentPages();
@@ -86,7 +86,7 @@ const getPageInstance = (num = 1) => {
 /**
  * @description 深拷贝引用类型数据
  * @param {Object | Array} obj 需要深拷贝的数据
- * @return{Any} 返回全新的数据
+ * @returns {Any} 返回全新的数据
  */
 const deepCopy = (obj) => {
 	let objClone = Array.isArray(obj) ? [] : {};
