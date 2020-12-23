@@ -1,13 +1,13 @@
 /**
  * @description 正则对象表
- * @property { Object } reglist 正则对象
- * @property { RegExp } reglist.phone 手机号码判断11位数
- * @property { RegExp } reglist.password 密码判断6-12位英文与数字
- * @property { RegExp } reglist.number 6位数字判断
- * @property { RegExp } reglist.prc 汉字判断
- * @property { RegExp } reglist.price 金额合法判断
- * @property { RegExp } reglist.email 邮箱判断
- * @property { Array } reglist.carNumPrefix 车牌号前缀
+ * @param { Object } reglist 正则对象
+ * @param { RegExp } reglist.phone 手机号码判断11位数
+ * @param { RegExp } reglist.password 密码判断6-12位英文与数字
+ * @param { RegExp } reglist.number 6位数字判断
+ * @param { RegExp } reglist.prc 汉字判断
+ * @param { RegExp } reglist.price 金额合法判断
+ * @param { RegExp } reglist.email 邮箱判断
+ * @param { Array } reglist.carNumPrefix 车牌号前缀
  */
 let reglist = {
 	phone: /^1[3456789]\d{9}$/,
