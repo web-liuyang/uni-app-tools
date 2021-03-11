@@ -5,7 +5,7 @@ set -e
 
 git add .
 
-git commit -m 'update'
+git commit -m '🌟 update code'
 
 git push gitee master
 
